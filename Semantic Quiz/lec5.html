@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 5 - Knowledge Types & Ontology Roles - Quiz</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;padding:20px;color:#333}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;color:white;margin-bottom:30px}
+.header h1{font-size:32px;margin-bottom:5px}
+.header p{opacity:.8;font-size:14px}
+.score-bar{background:rgba(255,255,255,.1);border-radius:12px;padding:15px 25px;display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;color:white;backdrop-filter:blur(10px)}
+.score-bar .score{font-size:24px;font-weight:bold}
+.score-bar .progress-text{font-size:14px;opacity:.8}
+.progress-bar{width:100%;height:6px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00d2ff,#3a7bd5);border-radius:3px;transition:width .3s ease}
+.question-card{background:white;border-radius:16px;padding:30px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.question-card.active{display:block;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.question-number{display:inline-block;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:5px 15px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:15px}
+.question-type{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:10px;font-size:11px;margin-left:10px}
+.question-type.mcq{background:#e3f2fd;color:#1565c0}
+.question-text{font-size:16px;line-height:1.7;margin-bottom:25px;color:#2c3e50}
+.options{display:flex;flex-direction:column;gap:12px}
+.option{padding:15px 20px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#667eea;background:#f8f9ff}
+.option.selected{border-color:#667eea;background:#f0f0ff}
+.option.correct{border-color:#27ae60;background:#e8f5e9}
+.option.wrong{border-color:#e74c3c;background:#ffeaea}
+.option-letter{width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.option.selected .option-letter{background:#667eea;color:white}
+.option.correct .option-letter{background:#27ae60;color:white}
+.option.wrong .option-letter{background:#e74c3c;color:white}
+.btn-row{display:flex;gap:12px;margin-top:25px}
+.btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(102,126,234,.4)}
+.btn-secondary{background:#f0f0f0;color:#333}
+.btn-secondary:hover{background:#e0e0e0}
+.btn-back{background:#f0f0f0;color:#333;border:1px solid #ddd}
+.btn-back:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{margin-top:20px;padding:15px 20px;border-radius:10px;display:none;font-size:14px;line-height:1.6}
+.feedback.show{display:block;animation:slideIn .3s ease}
+.feedback.correct{background:#e8f5e9;color:#2e7d32;border-left:4px solid #27ae60}
+.feedback.wrong{background:#ffeaea;color:#c0392b;border-left:4px solid #e74c3c}
+.results-card{background:white;border-radius:16px;padding:40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.results-card.active{display:block;animation:slideIn .3s ease}
+.results-card h2{font-size:28px;margin-bottom:10px}
+.results-score{font-size:64px;font-weight:bold;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:20px 0}
+.results-details{display:flex;justify-content:center;gap:40px;margin:30px 0}
+.result-item{text-align:center}
+.result-item .number{font-size:32px;font-weight:bold}
+.result-item .label{font-size:13px;color:#666;margin-top:5px}
+.result-item.correct .number{color:#27ae60}
+.result-item.wrong .number{color:#e74c3c}
+.start-screen{background:white;border-radius:16px;padding:50px 40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.start-screen h2{font-size:24px;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:30px;line-height:1.6}
+.start-screen .stats{display:flex;justify-content:center;gap:30px;margin-bottom:30px}
+.start-screen .stat{text-align:center}
+.start-screen .stat .num{font-size:28px;font-weight:bold;color:#667eea}
+.start-screen .stat .lbl{font-size:12px;color:#999}
+@media(max-width:600px){.container{padding:0}.question-card,.results-card,.start-screen{padding:20px}.header h1{font-size:24px}.results-score{font-size:48px}}</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Lecture 5 - Knowledge Types & Ontology Roles</h1>
+<p>Lec 5: Knowledge Engineering Process Characteristics, Knowledge Types, Ontology in CS</p>
+</div>
+<div class="score-bar" id="scoreBar" style="display:none">
+<div>
+<div class="score" id="scoreDisplay">0 / 0</div>
+<div class="progress-text" id="progressText">Question 1 of 44</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="start-screen" id="startScreen">
+<h2>Ready to test your knowledge?</h2>
+<p>This quiz covers Lec 5: Knowledge Engineering Process Characteristics, Knowledge Types, Ontology in CS with multiple choice and true/false questions.</p>
+<div class="stats">
+<div class="stat"><div class="num">44</div><div class="lbl">Questions</div></div>
+<div class="stat"><div class="num">24</div><div class="lbl">Multiple Choice</div></div>
+<div class="stat"><div class="num">20</div><div class="lbl">True / False</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+<div id="quizContainer"></div>
+<div class="results-card" id="resultsCard">
+<h2>Quiz Complete!</h2>
+<div class="results-score" id="finalScore"></div>
+<div class="results-details">
+<div class="result-item correct"><div class="number" id="correctCount">0</div><div class="label">Correct</div></div>
+<div class="result-item wrong"><div class="number" id="wrongCount">0</div><div class="label">Wrong</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+</div>
+<script>
+var Q=[{"text": "The knowledge engineering process is performed by whom?", "options": ["Automated software agents", "Domain experts only", "People, specifically knowledge engineers", "End-users of the system"], "answer": 2, "explanation": "The knowledge engineering process is performed by people, specifically knowledge engineers."}, {"text": "Why is documentation and a standard format considered very important in the knowledge engineering process?", "options": ["To satisfy software licensing requirements.", "To make the initial knowledge elicitation faster.", "To manage risk when knowledge changes and grows over time.", "To automatically generate the final ontology."], "answer": 2, "explanation": "Documentation and standard format manage risk when knowledge changes and grows over time."}, {"text": "Which of the following is NOT listed as a characteristic of the Knowledge Engineering Process?", "options": ["Iterative", "Linear", "Extended", "Hybrid"], "answer": 1, "explanation": "The Knowledge Engineering Process is NOT linear - it is iterative, extended, and hybrid."}, {"text": "The iterative nature of the knowledge engineering process means that knowledge engineers must:", "options": ["Complete the process in a single cycle.", "Regularly go back to domain experts to ensure correctness and completeness.", "Only perform analysis at the very end of the project.", "Use only one technique for knowledge elicitation."], "answer": 1, "explanation": "The iterative nature means regularly going back to domain experts to ensure correctness and completeness."}, {"text": "According to the lecture, analysis as a continuous task is performed during which phases?", "options": ["Only during the initial elicitation phase.", "Only during the representation and specification phase.", "After the completion of the project only.", "During elicitation, after elicitation, and during representation and specification."], "answer": 3, "explanation": "Analysis is performed during elicitation, after elicitation, and during representation and specification."}, {"text": "What does it mean for the knowledge engineering process to be 'extended'?", "options": ["The project timeline is very long.", "The process uses multiple elicitation techniques.", "The knowledge base can be enriched with new knowledge even after its initial completion.", "The process must be performed by an extended team of experts."], "answer": 2, "explanation": "'Extended' means the knowledge base can be enriched with new knowledge even after initial completion."}, {"text": "The term 'hybrid' in the knowledge engineering process refers to the use of:", "options": ["A single, all-encompassing technique for all tasks.", "Both manual and fully automated processes exclusively.", "More than one technique to get the same knowledge or hybrid representations for chunks of knowledge.", "A combination of hardware and software solutions."], "answer": 2, "explanation": "'Hybrid' means using more than one technique to get the same knowledge or hybrid representations."}, {"text": "In the context of studying a problem, the preparatory study of the domain, its terminology, and the interrelationship of its concepts is similar to the concept of:", "options": ["Software programming", "Ontology", "Strategic knowledge", "Inference"], "answer": 1, "explanation": "The preparatory study of a domain is similar to the concept of ontology."}, {"text": "In computer science, an ontology is primarily defined as a:", "options": ["Programming language for the Semantic Web.", "Domain model that formally represents domain concepts.", "Database for storing large amounts of data.", "User interface for a software application."], "answer": 1, "explanation": "In computer science, an ontology is a domain model that formally represents domain concepts."}, {"text": "In computer science, an ontology can be described as a knowledge body that:", "options": ["Is specific to a single software application and cannot be reused.", "Describes concepts and relationships for use in a variety of applications.", "Focuses only on the procedural aspects of a program.", "Replaces the need for any other type of knowledge."], "answer": 1, "explanation": "An ontology describes concepts and relationships for use in a variety of applications."}, {"text": "An ontology, as a foundation for building software, describes domain concepts in a:", "options": ["Procedural way, implying exactly how and where it will be used.", "Declarative way, without implying where or how it is going to be used.", "Graphical way, using only diagrams and pictures.", "Confidential way, hidden from software developers."], "answer": 1, "explanation": "An ontology describes domain concepts in a declarative way, without implying where or how it will be used."}, {"text": "An ontology can act as a connection between different units of software by serving as a:", "options": ["Central processing unit.", "Common reference.", "Proprietary data format.", "User authentication module."], "answer": 1, "explanation": "An ontology serves as a common reference connecting different units of software."}, {"text": "According to one school of thought in AI knowledge engineering, how many different types or aspects of knowledge are there to represent?", "options": ["Two", "Three", "Four", "Five"], "answer": 2, "explanation": "There are four types: Domain, Inference, Task, and Strategic knowledge."}, {"text": "In AI knowledge engineering, which type of knowledge is considered the basic one, represented as an ontology, and describes the concepts of a domain?", "options": ["Inference knowledge", "Task knowledge", "Strategic knowledge", "Domain knowledge"], "answer": 3, "explanation": "Domain knowledge is the basic type, represented as an ontology, describing the concepts of a domain."}, {"text": "Inference knowledge describes:", "options": ["The basic tasks performed within a domain.", "How to make choices or decisions.", "The concepts of a domain.", "How to infer one concept from another according to rules."], "answer": 3, "explanation": "Inference knowledge describes how to infer one concept from another according to rules."}, {"text": "Knowledge about basic tasks that are performed within one domain is referred to as:", "options": ["Domain knowledge", "Inference knowledge", "Task knowledge", "Strategic knowledge"], "answer": 2, "explanation": "Task knowledge is about basic tasks performed within one domain."}, {"text": "Which type of knowledge describes how to make choices or make decisions?", "options": ["Domain knowledge", "Inference knowledge", "Task knowledge", "Strategic knowledge"], "answer": 3, "explanation": "Strategic knowledge describes how to make choices or make decisions."}, {"text": "Supporting tools in the knowledge engineering process are primarily used to:", "options": ["Replace the knowledge engineer entirely.", "Make the management of the process easier and help eliminate errors early.", "Automatically generate domain knowledge without expert input.", "Create the final software product directly from the ontology."], "answer": 1, "explanation": "Supporting tools make management easier and help eliminate errors early."}, {"text": "The preparatory study of a problem's domain provides a necessary understanding of the problem's:", "options": ["Final software code.", "Budget and timeline.", "Concepts and the interrelationship of those concepts.", "Target market and end-users."], "answer": 2, "explanation": "Preparatory study provides understanding of the concepts and their interrelationships."}, {"text": "Specifying software is actually specifying the ________ of the solution of the problem.", "options": ["Cost", "Behavior", "Developers", "Hardware requirements"], "answer": 1, "explanation": "Specifying software is actually specifying the behavior of the solution."}, {"text": "The knowledge engineering process is a one-time, linear process that is completed in a single cycle.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The process is iterative, meaning it contains cycles and keeps going back to domain experts."}, {"text": "Analysis is a task performed only after the knowledge elicitation phase is completely finished.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Analysis is continuous - performed during elicitation, after elicitation, and during representation and specification."}, {"text": "The knowledge engineering process is considered 'extended' because after the initial completion, we may discover and add new knowledge to enrich the knowledge base.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "'Extended' means the knowledge base can be enriched with new knowledge even after initial completion."}, {"text": "A hybrid approach in knowledge elicitation means using only one, strictly defined technique to ensure consistency.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Hybrid means using more than one technique to get the same knowledge."}, {"text": "The preparatory study of a problem domain is unrelated to the concept of ontology.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The preparatory study of a domain, including terminology and concepts, is similar to the concept of ontology."}, {"text": "In computer science, an ontology is a term that has come to mean a model for domain concepts.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "In computer science, an ontology has come to mean a model for domain concepts."}, {"text": "An ontology describes concepts and relationships, but this description cannot be reused and is limited to a single application.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "An ontology can be used in a variety of applications."}, {"text": "An ontology describes domain concepts in a declarative way, specifying where and how it is going to be used.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "An ontology describes concepts in a declarative way, WITHOUT implying where or how it is going to be used."}, {"text": "One of the roles of an ontology is to act as a common reference, creating a connection between different units of software.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "An ontology acts as a common reference connecting different units of software."}, {"text": "Specifying software is actually specifying the behavior of the solution of the problem.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Specifying software is specifying the behavior of the solution."}, {"text": "According to one school in AI, knowledge has three different aspects to represent: domain, inference, and task knowledge.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "There are FOUR aspects: Domain, Inference, Task, and Strategic knowledge."}, {"text": "Domain knowledge describes the concepts of a domain and is represented as an ontology.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Domain knowledge describes the concepts of a domain and is represented as an ontology."}, {"text": "Inference knowledge describes the basic tasks that are performed within one domain.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Task knowledge describes basic tasks. Inference knowledge describes how to infer one concept from another."}, {"text": "Task knowledge is knowledge about how to infer one concept from another according to rules.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Inference knowledge is about inferring concepts. Task knowledge is about basic tasks in a domain."}, {"text": "Strategic knowledge describes how to make choices or decisions.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Strategic knowledge describes how to make choices or decisions."}, {"text": "Supporting tools in knowledge engineering aim to make the management of the process easier and help eliminate errors early.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Supporting tools make management easier and help eliminate errors early."}, {"text": "Without proper documentation and a standard format, managing changes to knowledge over time can be risky.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Without proper documentation and standard format, managing changes to knowledge over time is risky."}, {"text": "The whole knowledge engineering process is fully automated and does not require manual work.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The knowledge engineering process involves heavy manual work."}, {"text": "An ontology contains mainly concepts and their relationships, but it does not include any constraints.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "An ontology contains concepts, relationships, AS WELL AS some constraints."}, {"text": "A program can be seen as a software solution to a problem.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "A program can be seen as a software solution to a problem."}, {"text": "[Scenario: Travel Planner] The team decides to use an Ontology for the travel domain. How would an ontology specifically improve search results for a query that includes 'relaxing beach resort'?", "options": ["It would make the website's user interface more visually appealing.", "It would ensure all hotels in the database have the same price.", "It would define that a 'resort' is a type of 'hotel' that must have a 'beach' and may have a 'spa,' allowing the system to infer relevant properties.", "It would replace all hotel descriptions with a standardized text format."], "answer": 2, "explanation": "An ontology formally defines concepts and relationships, allowing the system to infer that a 'resort' is a type of 'hotel' with a 'beach'."}, {"text": "[Scenario: Travel Planner] A new hotel opens and changes its name. In a Semantic Web system, which part of the knowledge engineering process is most directly responsible for updating this information and ensuring correctness?", "options": ["Elicitation", "Specification", "Verification & Validation", "Linked Data"], "answer": 2, "explanation": "V&V is the ongoing process of checking correctness and completeness, including maintenance and updating of knowledge."}, {"text": "[Scenario: E-Commerce] ShopFast wants to ensure that when a vendor adds a new 'Smartphone', they must provide attributes like 'screen size,' 'battery capacity,' and 'camera resolution.' What ontological component enforces these requirements?", "options": ["Taxonomy", "Relationships", "Axioms (Constraints)", "Metadata"], "answer": 2, "explanation": "Axioms are constraints/rules that ensure consistency - they can require certain properties to have values for a class."}, {"text": "[Scenario: E-Commerce] ShopFast adds structured tags to each product: color:black, RAM:16GB, processor:Intel i7. These tags provide context and meaning. What are these structured tags called?", "options": ["Linked Data", "Taxonomy", "Ontology", "Metadata"], "answer": 3, "explanation": "These structured tags are metadata - 'data about data' that provide context and meaning."}];
+var currentQ=0,score=0,answered=false,selectedOption=-1;
+function startQuiz(){
+document.getElementById('startScreen').style.display='none';
+document.getElementById('scoreBar').style.display='flex';
+document.getElementById('resultsCard').classList.remove('active');
+currentQ=0;score=0;answered=false;selectedOption=-1;
+renderQuestion();
+}
+function renderQuestion(){
+var q=Q[currentQ];
+var total=Q.length;
+document.getElementById('scoreDisplay').textContent=score+' / '+total;
+document.getElementById('progressText').textContent='Question '+(currentQ+1)+' of '+total;
+document.getElementById('progressFill').style.width=((currentQ)/total*100)+'%';
+answered=false;selectedOption=-1;
+var html='<div class="question-card active">';
+html+='<span class="question-number">Question '+(currentQ+1)+'</span>';
+html+='<span class="question-type '+(q.tf?'':'mcq')+'">'+(q.tf?'True / False':'Multiple Choice')+'</span>';
+html+='<p class="question-text">'+q.text+'</p>';
+var letters=['A','B','C','D'];
+html+='<div class="options" id="options">';
+for(var i=0;i<q.options.length;i++){
+html+='<div class="option" data-idx="'+i+'" onclick="selectOption('+i+')">';
+html+='<div class="option-letter">'+letters[i]+'</div>';
+html+='<div>'+q.options[i]+'</div>';
+html+='</div>';
+}
+html+='</div>';
+html+='<div class="btn-row">';
+html+='<button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">Check Answer</button>';
+html+='<button class="btn btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display:none">'+(currentQ===total-1?'See Results':'Next Question')+'</button>';
+html+='</div>';
+html+='<div class="feedback" id="feedback"></div>';
+html+='</div>';
+document.getElementById('quizContainer').innerHTML=html;
+}
+function selectOption(idx){
+if(answered)return;
+selectedOption=idx;
+var opts=document.querySelectorAll('.option');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.remove('selected');
+}
+opts[idx].classList.add('selected');
+}
+function checkAnswer(){
+if(answered)return;
+var q=Q[currentQ];
+if(selectedOption===-1){alert('Please select an answer.');return;}
+var correct=(selectedOption===q.answer);
+answered=true;
+if(correct)score++;
+document.getElementById('scoreDisplay').textContent=score+' / '+Q.length;
+var opts=document.querySelectorAll('.option');
+opts[q.answer].classList.add('correct');
+if(!correct)opts[selectedOption].classList.add('wrong');
+var fb=document.getElementById('feedback');
+fb.className='feedback show '+(correct?'correct':'wrong');
+fb.innerHTML=(correct?'Correct! ':'Wrong. ')+'<br>'+q.explanation;
+document.getElementById('checkBtn').style.display='none';
+document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){
+currentQ++;
+if(currentQ>=Q.length){showResults();return;}
+renderQuestion();
+}
+function showResults(){
+document.getElementById('quizContainer').innerHTML='';
+document.getElementById('scoreBar').style.display='none';
+document.getElementById('progressFill').style.width='100%';
+var pct=Math.round(score/Q.length*100);
+document.getElementById('finalScore').textContent=pct+'%';
+document.getElementById('correctCount').textContent=score;
+document.getElementById('wrongCount').textContent=Q.length-score;
+document.getElementById('resultsCard').classList.add('active');
+}
+function restartQuiz(){
+document.getElementById('resultsCard').classList.remove('active');
+document.getElementById('startScreen').style.display='block';
+}
+</script>
+</body>
+</html>

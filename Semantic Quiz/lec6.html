@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 6 - Ontology Definition & Components - Quiz</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;padding:20px;color:#333}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;color:white;margin-bottom:30px}
+.header h1{font-size:32px;margin-bottom:5px}
+.header p{opacity:.8;font-size:14px}
+.score-bar{background:rgba(255,255,255,.1);border-radius:12px;padding:15px 25px;display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;color:white;backdrop-filter:blur(10px)}
+.score-bar .score{font-size:24px;font-weight:bold}
+.score-bar .progress-text{font-size:14px;opacity:.8}
+.progress-bar{width:100%;height:6px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00d2ff,#3a7bd5);border-radius:3px;transition:width .3s ease}
+.question-card{background:white;border-radius:16px;padding:30px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.question-card.active{display:block;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.question-number{display:inline-block;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:5px 15px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:15px}
+.question-type{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:10px;font-size:11px;margin-left:10px}
+.question-type.mcq{background:#e3f2fd;color:#1565c0}
+.question-text{font-size:16px;line-height:1.7;margin-bottom:25px;color:#2c3e50}
+.options{display:flex;flex-direction:column;gap:12px}
+.option{padding:15px 20px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#667eea;background:#f8f9ff}
+.option.selected{border-color:#667eea;background:#f0f0ff}
+.option.correct{border-color:#27ae60;background:#e8f5e9}
+.option.wrong{border-color:#e74c3c;background:#ffeaea}
+.option-letter{width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.option.selected .option-letter{background:#667eea;color:white}
+.option.correct .option-letter{background:#27ae60;color:white}
+.option.wrong .option-letter{background:#e74c3c;color:white}
+.btn-row{display:flex;gap:12px;margin-top:25px}
+.btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(102,126,234,.4)}
+.btn-secondary{background:#f0f0f0;color:#333}
+.btn-secondary:hover{background:#e0e0e0}
+.btn-back{background:#f0f0f0;color:#333;border:1px solid #ddd}
+.btn-back:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{margin-top:20px;padding:15px 20px;border-radius:10px;display:none;font-size:14px;line-height:1.6}
+.feedback.show{display:block;animation:slideIn .3s ease}
+.feedback.correct{background:#e8f5e9;color:#2e7d32;border-left:4px solid #27ae60}
+.feedback.wrong{background:#ffeaea;color:#c0392b;border-left:4px solid #e74c3c}
+.results-card{background:white;border-radius:16px;padding:40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.results-card.active{display:block;animation:slideIn .3s ease}
+.results-card h2{font-size:28px;margin-bottom:10px}
+.results-score{font-size:64px;font-weight:bold;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:20px 0}
+.results-details{display:flex;justify-content:center;gap:40px;margin:30px 0}
+.result-item{text-align:center}
+.result-item .number{font-size:32px;font-weight:bold}
+.result-item .label{font-size:13px;color:#666;margin-top:5px}
+.result-item.correct .number{color:#27ae60}
+.result-item.wrong .number{color:#e74c3c}
+.start-screen{background:white;border-radius:16px;padding:50px 40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.start-screen h2{font-size:24px;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:30px;line-height:1.6}
+.start-screen .stats{display:flex;justify-content:center;gap:30px;margin-bottom:30px}
+.start-screen .stat{text-align:center}
+.start-screen .stat .num{font-size:28px;font-weight:bold;color:#667eea}
+.start-screen .stat .lbl{font-size:12px;color:#999}
+@media(max-width:600px){.container{padding:0}.question-card,.results-card,.start-screen{padding:20px}.header h1{font-size:24px}.results-score{font-size:48px}}</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Lecture 6 - Ontology Definition & Components</h1>
+<p>Lec 6: Ontology Definition, Levels, Components, and Scenarios</p>
+</div>
+<div class="score-bar" id="scoreBar" style="display:none">
+<div>
+<div class="score" id="scoreDisplay">0 / 0</div>
+<div class="progress-text" id="progressText">Question 1 of 44</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="start-screen" id="startScreen">
+<h2>Ready to test your knowledge?</h2>
+<p>This quiz covers Lec 6: Ontology Definition, Levels, Components, and Scenarios with multiple choice and true/false questions.</p>
+<div class="stats">
+<div class="stat"><div class="num">44</div><div class="lbl">Questions</div></div>
+<div class="stat"><div class="num">24</div><div class="lbl">Multiple Choice</div></div>
+<div class="stat"><div class="num">20</div><div class="lbl">True / False</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+<div id="quizContainer"></div>
+<div class="results-card" id="resultsCard">
+<h2>Quiz Complete!</h2>
+<div class="results-score" id="finalScore"></div>
+<div class="results-details">
+<div class="result-item correct"><div class="number" id="correctCount">0</div><div class="label">Correct</div></div>
+<div class="result-item wrong"><div class="number" id="wrongCount">0</div><div class="label">Wrong</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+</div>
+<script>
+var Q=[{"text": "According to the lecture, what is the primary definition of an ontology?", "options": ["A complex computer program", "A representation of shared knowledge", "A type of database", "A private, individual's perspective"], "answer": 1, "explanation": "An ontology is primarily defined as a representation of shared knowledge."}, {"text": "On which level is ontology represented as a shared vocabulary among a team, though not formally represented?", "options": ["The knowledge representation level", "The profession level as a 'Jargon'", "The Program (Machine) readable level", "The informal level among a team"], "answer": 3, "explanation": "The informal level among a team is a shared vocabulary that is not formally represented."}, {"text": "At the profession level, ontology is often referred to as:", "options": ["Vocabulary", "Axioms", "Jargon", "Taxonomies"], "answer": 2, "explanation": "At the profession level, ontology is often referred to as 'Jargon'."}, {"text": "According to the lecture, which of the following is NOT listed as one of the four main components of an ontology?", "options": ["Concepts, Terms, Vocabulary", "Axioms", "Algorithms", "Taxonomies"], "answer": 2, "explanation": "Algorithms are NOT one of the four main components. The four are: Concepts, Axioms, Relationships, and Taxonomies."}, {"text": "What is the role of 'Relationships' in an ontology?", "options": ["To define the visual layout of the ontology", "To provide a hierarchical organization of concepts", "To act as a set of constraints that guarantee the logical correctness of the concepts", "To store the raw data for the domain"], "answer": 2, "explanation": "Relationships act as a set of constraints that guarantee the logical correctness of the concepts."}, {"text": "How are 'Taxonomies' best described in the context of ontology components?", "options": ["A flat list of all concepts", "A hierarchical organization of concepts, often based on properties and an 'is-a' relationship", "A set of mathematical formulas", "A random grouping of vocabulary"], "answer": 1, "explanation": "Taxonomies are a hierarchical organization of concepts, often based on properties and an 'is-a' relationship."}, {"text": "In Ontology Engineering, what does the term 'Formal' refer to?", "options": ["That the ontology is written in a formal, academic language", "That the ontology should be machine-readable", "That the ontology is expensive to create", "That the ontology is only used in formal situations"], "answer": 1, "explanation": "'Formal' means the ontology should be machine-readable."}, {"text": "The term 'Explicit' in the definition of an ontology means that:", "options": ["The ontology is publicly available", "The concepts and constraints on their use are clearly and explicitly defined", "The ontology is written in a programming language", "The ontology is very large and detailed"], "answer": 1, "explanation": "'Explicit' means the concepts and constraints are clearly and explicitly defined."}, {"text": "What does the 'Shared' aspect of the ontology definition imply?", "options": ["The ontology is free to use", "The ontology is stored on a shared network drive", "The knowledge captured by the ontology is accepted by a group, not just an individual", "The ontology can be easily copied"], "answer": 2, "explanation": "'Shared' means the knowledge is accepted by a group, not just an individual."}, {"text": "'Conceptualization' in Ontology Engineering refers to:", "options": ["The process of writing the ontology in code", "An abstract model of a phenomenon, identifying its relevant concepts", "The final, published version of the ontology", "A brainstorming session with a team"], "answer": 1, "explanation": "Conceptualization is an abstract model of a phenomenon, identifying its relevant concepts."}, {"text": "At which level are knowledge representation formats like rules, frames, and semantic networks used?", "options": ["The informal level", "The profession level", "The knowledge representation level", "The vocabulary level"], "answer": 2, "explanation": "Rules, frames, and semantic networks are used at the knowledge representation level."}, {"text": "The set of special terms used within a profession, gained through training and education, is an example of ontology at which level?", "options": ["Informal level among a team", "Profession level as a 'Jargon'", "Program (Machine) readable level", "Knowledge representation level"], "answer": 1, "explanation": "Professional jargon is ontology at the profession level."}, {"text": "Which component of an ontology is described as the 'most used'?", "options": ["Axioms", "Relationships", "Concepts", "Taxonomies"], "answer": 3, "explanation": "Taxonomies are described as the most used component of an ontology."}, {"text": "According to the lecture, a key difference between informal vocabulary and professional jargon is that jargon is:", "options": ["Less formal", "More secret", "More formal and gained through training/education", "Only used by software engineers"], "answer": 2, "explanation": "Professional jargon is more formal and gained through training and education."}, {"text": "What is the purpose of using standard forms like rules, frames, and semantic networks at the knowledge representation level?", "options": ["To make the knowledge harder to understand", "To replace human thinking", "To specify knowledge and act as an intermediate format for translation", "To create artistic diagrams"], "answer": 2, "explanation": "Standard forms specify knowledge and act as an intermediate format for translation to machine-readable formats."}, {"text": "The four main components of an ontology work together to:", "options": ["Create a visually appealing diagram", "Form a logically correct and structured representation of a domain", "Replace all other forms of data storage", "Confuse new learners"], "answer": 1, "explanation": "The four components work together to form a logically correct and structured representation of a domain."}, {"text": "In the context of taxonomies, what does the 'is-a' relationship help to establish?", "options": ["A random association", "A hierarchical class structure (e.g., a Dog is-a Mammal)", "A temporal sequence", "A mathematical equation"], "answer": 1, "explanation": "The 'is-a' relationship establishes a hierarchical class structure."}, {"text": "The idea that ontology captures knowledge that is 'accepted by a group' is best summarized by which term from its definition?", "options": ["Formal", "Explicit", "Shared", "Conceptualization"], "answer": 2, "explanation": "'Shared' means the knowledge is accepted by a group."}, {"text": "The 'knowledge representation level' serves as an intermediate format that can later be translated to:", "options": ["An informal conversation", "Another, likely machine-readable, format", "A private thought", "A physical object"], "answer": 1, "explanation": "The knowledge representation level serves as an intermediate format to be translated to a machine-readable format."}, {"text": "Which of the following is NOT a characteristic of the 'informal level among a team'?", "options": ["It is a set of shared vocabulary", "It has special meaning to team members", "It is very common", "It is formally documented and structured"], "answer": 3, "explanation": "The informal level is NOT formally documented and structured."}, {"text": "An ontology is best described as a representation of private, unshared knowledge.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "An ontology is a representation of shared knowledge."}, {"text": "The informal level of ontology among a team is the most commonly used but is not formally represented.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The informal level is the most commonly used but is not formally represented."}, {"text": "Professional jargon is less formal than the informal vocabulary used by a team.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Professional jargon is MORE formal than informal vocabulary."}, {"text": "At the knowledge representation level, knowledge engineers use special formats like rules, frames, and semantic networks.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Knowledge engineers use rules, frames, and semantic networks at the knowledge representation level."}, {"text": "According to the lecture, ontology has three main components: Concepts, Axioms, and Taxonomies.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Ontology has FOUR main components: Concepts, Axioms, Relationships, and Taxonomies."}, {"text": "The 'Relationships' component of an ontology acts as a set of constraints to ensure logical correctness.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Relationships act as constraints to ensure logical correctness of the concepts."}, {"text": "Taxonomies provide a flat, non-hierarchical organization of concepts.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Taxonomies provide a HIERARCHICAL organization of concepts."}, {"text": "In Ontology Engineering, 'Formal' means that the ontology should be readable by humans.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "'Formal' means the ontology should be MACHINE-readable."}, {"text": "'Explicit' means that the concepts and their constraints are vaguely defined.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "'Explicit' means the concepts and constraints are clearly and explicitly defined."}, {"text": "The term 'Shared' in the definition of ontology implies that the knowledge is accepted by a group.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "'Shared' means the knowledge is accepted by a group."}, {"text": "Conceptualization refers to a concrete, physical model of a phenomenon.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Conceptualization refers to an ABSTRACT model of a phenomenon."}, {"text": "Professional jargon is always formally documented in a manual.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Professional jargon may or may not be documented."}, {"text": "The standard forms used at the knowledge representation level cannot be translated to other formats.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Standard forms are used as an intermediate format to be translated later to another format."}, {"text": "Taxonomies often categorize concepts based on certain attributes and use an 'is-a' relationship.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Taxonomies categorize concepts based on attributes and use an 'is-a' relationship."}, {"text": "The informal team vocabulary is usually formally represented and documented.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The informal team vocabulary is NOT formally represented or documented."}, {"text": "The four main components of an ontology are independent and do not interact to ensure correctness.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The four components work together, with relationships guaranteeing the correctness of the whole set."}, {"text": "The knowledge representation level can be used as an intermediate format.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The knowledge representation level can be used as an intermediate format."}, {"text": "Axioms are the most used component of an ontology.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Taxonomies are the most used component, not axioms."}, {"text": "The set of constraints that exist in a domain are gathered and represented as part of the 'Relationships' component.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Domain constraints are gathered and represented as part of the Relationships component."}, {"text": "The full definition of an ontology presented is 'a formal, explicit specification of a shared conceptualization'.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The full definition is 'a formal, explicit specification of a shared conceptualization'."}, {"text": "[Scenario: University Library] The library decides to build an ontology to improve search. How would an ontology specifically help with the vocabulary mismatch between 'neural networks' and 'Artificial Neural Systems'?", "options": ["It would automatically replace all catalog terms with user-friendly keywords.", "It would define that 'neural networks' and 'Artificial Neural Systems' are equivalent concepts or synonyms within the domain.", "It would limit search results to only peer-reviewed journals.", "It would rank search results based on publication date."], "answer": 1, "explanation": "An ontology can declare equivalence relationships between terms, solving vocabulary mismatch problems."}, {"text": "[Scenario: Medical Research] To solve the problem of different hospitals using different terminologies and create a unified view of diabetes patients, the research team should build a shared:", "options": ["Web page.", "Database server.", "Ontology.", "New set of questionnaires."], "answer": 2, "explanation": "An ontology provides a formal, shared understanding of a domain, enabling data integration across different systems."}, {"text": "[Scenario: Museum Art Catalog] The museum assigns URI 'museum/artist/van-gogh' and declares it 'owl:sameAs' Louvre's URI 'louvre/artist/van-gogh'. The system can then automatically query the Louvre for all works by Van Gogh. This is an example of:", "options": ["Taxonomy", "Metadata", "Linked Data", "Axioms"], "answer": 2, "explanation": "Linked Data uses URIs to identify entities and connects them across different sources using properties like owl:sameAs."}, {"text": "[Scenario: Museum Art Catalog] A taxonomy organizes: Subject > Landscape > Garden. A painting tagged 'Garden' is inferred to also be a 'Landscape.' A search for 'Landscape paintings' will return gardens. What does this demonstrate?", "options": ["The 'is-a' relationship in taxonomies enables inference of related categories.", "Metadata tags improve search accuracy.", "Linked Data connects different museums.", "Axioms enforce data constraints."], "answer": 0, "explanation": "The 'is-a' relationship in taxonomies allows inference - a Garden is a type of Landscape, so searching for Landscapes returns Gardens."}];
+var currentQ=0,score=0,answered=false,selectedOption=-1;
+function startQuiz(){
+document.getElementById('startScreen').style.display='none';
+document.getElementById('scoreBar').style.display='flex';
+document.getElementById('resultsCard').classList.remove('active');
+currentQ=0;score=0;answered=false;selectedOption=-1;
+renderQuestion();
+}
+function renderQuestion(){
+var q=Q[currentQ];
+var total=Q.length;
+document.getElementById('scoreDisplay').textContent=score+' / '+total;
+document.getElementById('progressText').textContent='Question '+(currentQ+1)+' of '+total;
+document.getElementById('progressFill').style.width=((currentQ)/total*100)+'%';
+answered=false;selectedOption=-1;
+var html='<div class="question-card active">';
+html+='<span class="question-number">Question '+(currentQ+1)+'</span>';
+html+='<span class="question-type '+(q.tf?'':'mcq')+'">'+(q.tf?'True / False':'Multiple Choice')+'</span>';
+html+='<p class="question-text">'+q.text+'</p>';
+var letters=['A','B','C','D'];
+html+='<div class="options" id="options">';
+for(var i=0;i<q.options.length;i++){
+html+='<div class="option" data-idx="'+i+'" onclick="selectOption('+i+')">';
+html+='<div class="option-letter">'+letters[i]+'</div>';
+html+='<div>'+q.options[i]+'</div>';
+html+='</div>';
+}
+html+='</div>';
+html+='<div class="btn-row">';
+html+='<button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">Check Answer</button>';
+html+='<button class="btn btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display:none">'+(currentQ===total-1?'See Results':'Next Question')+'</button>';
+html+='</div>';
+html+='<div class="feedback" id="feedback"></div>';
+html+='</div>';
+document.getElementById('quizContainer').innerHTML=html;
+}
+function selectOption(idx){
+if(answered)return;
+selectedOption=idx;
+var opts=document.querySelectorAll('.option');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.remove('selected');
+}
+opts[idx].classList.add('selected');
+}
+function checkAnswer(){
+if(answered)return;
+var q=Q[currentQ];
+if(selectedOption===-1){alert('Please select an answer.');return;}
+var correct=(selectedOption===q.answer);
+answered=true;
+if(correct)score++;
+document.getElementById('scoreDisplay').textContent=score+' / '+Q.length;
+var opts=document.querySelectorAll('.option');
+opts[q.answer].classList.add('correct');
+if(!correct)opts[selectedOption].classList.add('wrong');
+var fb=document.getElementById('feedback');
+fb.className='feedback show '+(correct?'correct':'wrong');
+fb.innerHTML=(correct?'Correct! ':'Wrong. ')+'<br>'+q.explanation;
+document.getElementById('checkBtn').style.display='none';
+document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){
+currentQ++;
+if(currentQ>=Q.length){showResults();return;}
+renderQuestion();
+}
+function showResults(){
+document.getElementById('quizContainer').innerHTML='';
+document.getElementById('scoreBar').style.display='none';
+document.getElementById('progressFill').style.width='100%';
+var pct=Math.round(score/Q.length*100);
+document.getElementById('finalScore').textContent=pct+'%';
+document.getElementById('correctCount').textContent=score;
+document.getElementById('wrongCount').textContent=Q.length-score;
+document.getElementById('resultsCard').classList.add('active');
+}
+function restartQuiz(){
+document.getElementById('resultsCard').classList.remove('active');
+document.getElementById('startScreen').style.display='block';
+}
+</script>
+</body>
+</html>

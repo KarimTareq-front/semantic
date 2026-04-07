@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 4 - Elicitation Plan, Representation & V&V - Quiz</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;padding:20px;color:#333}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;color:white;margin-bottom:30px}
+.header h1{font-size:32px;margin-bottom:5px}
+.header p{opacity:.8;font-size:14px}
+.score-bar{background:rgba(255,255,255,.1);border-radius:12px;padding:15px 25px;display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;color:white;backdrop-filter:blur(10px)}
+.score-bar .score{font-size:24px;font-weight:bold}
+.score-bar .progress-text{font-size:14px;opacity:.8}
+.progress-bar{width:100%;height:6px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00d2ff,#3a7bd5);border-radius:3px;transition:width .3s ease}
+.question-card{background:white;border-radius:16px;padding:30px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.question-card.active{display:block;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.question-number{display:inline-block;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:5px 15px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:15px}
+.question-type{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:10px;font-size:11px;margin-left:10px}
+.question-type.mcq{background:#e3f2fd;color:#1565c0}
+.question-text{font-size:16px;line-height:1.7;margin-bottom:25px;color:#2c3e50}
+.options{display:flex;flex-direction:column;gap:12px}
+.option{padding:15px 20px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#667eea;background:#f8f9ff}
+.option.selected{border-color:#667eea;background:#f0f0ff}
+.option.correct{border-color:#27ae60;background:#e8f5e9}
+.option.wrong{border-color:#e74c3c;background:#ffeaea}
+.option-letter{width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.option.selected .option-letter{background:#667eea;color:white}
+.option.correct .option-letter{background:#27ae60;color:white}
+.option.wrong .option-letter{background:#e74c3c;color:white}
+.btn-row{display:flex;gap:12px;margin-top:25px}
+.btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(102,126,234,.4)}
+.btn-secondary{background:#f0f0f0;color:#333}
+.btn-secondary:hover{background:#e0e0e0}
+.btn-back{background:#f0f0f0;color:#333;border:1px solid #ddd}
+.btn-back:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{margin-top:20px;padding:15px 20px;border-radius:10px;display:none;font-size:14px;line-height:1.6}
+.feedback.show{display:block;animation:slideIn .3s ease}
+.feedback.correct{background:#e8f5e9;color:#2e7d32;border-left:4px solid #27ae60}
+.feedback.wrong{background:#ffeaea;color:#c0392b;border-left:4px solid #e74c3c}
+.results-card{background:white;border-radius:16px;padding:40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.results-card.active{display:block;animation:slideIn .3s ease}
+.results-card h2{font-size:28px;margin-bottom:10px}
+.results-score{font-size:64px;font-weight:bold;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:20px 0}
+.results-details{display:flex;justify-content:center;gap:40px;margin:30px 0}
+.result-item{text-align:center}
+.result-item .number{font-size:32px;font-weight:bold}
+.result-item .label{font-size:13px;color:#666;margin-top:5px}
+.result-item.correct .number{color:#27ae60}
+.result-item.wrong .number{color:#e74c3c}
+.start-screen{background:white;border-radius:16px;padding:50px 40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.start-screen h2{font-size:24px;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:30px;line-height:1.6}
+.start-screen .stats{display:flex;justify-content:center;gap:30px;margin-bottom:30px}
+.start-screen .stat{text-align:center}
+.start-screen .stat .num{font-size:28px;font-weight:bold;color:#667eea}
+.start-screen .stat .lbl{font-size:12px;color:#999}
+@media(max-width:600px){.container{padding:0}.question-card,.results-card,.start-screen{padding:20px}.header h1{font-size:24px}.results-score{font-size:48px}}</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Lecture 4 - Elicitation Plan, Representation & V&V</h1>
+<p>Lec 4: Elicitation Plan, Representation, Specification, Verification & Validation</p>
+</div>
+<div class="score-bar" id="scoreBar" style="display:none">
+<div>
+<div class="score" id="scoreDisplay">0 / 0</div>
+<div class="progress-text" id="progressText">Question 1 of 44</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="start-screen" id="startScreen">
+<h2>Ready to test your knowledge?</h2>
+<p>This quiz covers Lec 4: Elicitation Plan, Representation, Specification, Verification & Validation with multiple choice and true/false questions.</p>
+<div class="stats">
+<div class="stat"><div class="num">44</div><div class="lbl">Questions</div></div>
+<div class="stat"><div class="num">24</div><div class="lbl">Multiple Choice</div></div>
+<div class="stat"><div class="num">20</div><div class="lbl">True / False</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+<div id="quizContainer"></div>
+<div class="results-card" id="resultsCard">
+<h2>Quiz Complete!</h2>
+<div class="results-score" id="finalScore"></div>
+<div class="results-details">
+<div class="result-item correct"><div class="number" id="correctCount">0</div><div class="label">Correct</div></div>
+<div class="result-item wrong"><div class="number" id="wrongCount">0</div><div class="label">Wrong</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+</div>
+<script>
+var Q=[{"text": "What is the primary characteristic of a 'structured' interview?", "options": ["Questions are asked freely during the meeting.", "Questions are well-known and prepared prior to the meeting.", "It involves observing the task in person.", "It is used to resolve conflicts between experts."], "answer": 1, "explanation": "In a structured interview, questions are well-known and prepared prior to the meeting."}, {"text": "In which scenario is 'Task observation' particularly useful?", "options": ["When there are formal documents on previous cases.", "When there is conflicting knowledge from multiple sources.", "When the validity of elicited knowledge is uncertain.", "When creating an elicitation plan."], "answer": 2, "explanation": "Task observation is particularly useful when the validity of elicited knowledge is uncertain."}, {"text": "Which elicitation technique involves analyzing formal records of previous cases, such as patient histories or student forms?", "options": ["Interviewing", "Task observation", "Joint Application Design (JAD)", "Document inspection"], "answer": 3, "explanation": "Document inspection involves analyzing formal records of previous cases."}, {"text": "When is the Joint Application Design (JAD) technique most effective to use?", "options": ["When interviewing a single domain expert.", "When knowledge needs to be elicited from a large group of customers via a questionnaire.", "When there are conflicting views or knowledge from multiple parties.", "When observing an operation to ensure its validity."], "answer": 2, "explanation": "JAD is most effective when there are conflicting views or knowledge from multiple parties."}, {"text": "What is the main purpose of an Elicitation Plan?", "options": ["To formally specify the knowledge in a computer language.", "To manage the complex process of knowledge elicitation.", "To verify and validate the final knowledge base.", "To conduct structured interviews."], "answer": 1, "explanation": "The main purpose of an Elicitation Plan is to manage the complex process of knowledge elicitation."}, {"text": "According to the elicitation plan, what should be listed first?", "options": ["The techniques to be used.", "The sources of knowledge.", "The knowledge items needed.", "The team members involved."], "answer": 2, "explanation": "In an elicitation plan, you start by listing the knowledge items needed."}, {"text": "If a knowledge item has multiple sources, the elicitation plan suggests that:", "options": ["All sources should be ignored to avoid conflict.", "The technique should be chosen based on the source.", "Only the most reliable source should be used.", "A Joint Application Design session must be held."], "answer": 1, "explanation": "If a knowledge item has multiple sources, the technique should be chosen based on the source."}, {"text": "What is a standard way to represent relationships between classes in an ontology?", "options": ["As a rule", "As a semantic network", "As an 'is-a' relationship", "As a frame"], "answer": 2, "explanation": "An 'is-a' relationship is a standard way to represent relationships between classes in an ontology."}, {"text": "What is the first step in the Representation phase?", "options": ["Converting knowledge into a formal specification.", "Analyzing elicitation notes and naming the items.", "Verifying the knowledge with domain experts.", "Conducting more interviews."], "answer": 1, "explanation": "The first step in Representation is analyzing elicitation notes and naming the items."}, {"text": "During the Representation phase, discovering missing items or duplicates creates:", "options": ["The final specification document.", "A successful validation of the knowledge.", "New questions that need further elicitation.", "An immediate need for Joint Application Design."], "answer": 2, "explanation": "Discovering missing items or duplicates creates new questions that need further elicitation."}, {"text": "What is the main activity in the Specification phase?", "options": ["Gathering knowledge from domain experts.", "Observing tasks in the workplace.", "Converting represented knowledge into a formal way.", "Creating an elicitation plan."], "answer": 2, "explanation": "The main activity in Specification is converting represented knowledge into a formal way."}, {"text": "In the Specification phase, after identifying classes and subclasses, what is the next step for a class?", "options": ["Observing it in a real-world task.", "Specifying its attributes, values, and ranges.", "Interviewing the user about it.", "Deciding on an elicitation technique for it."], "answer": 1, "explanation": "After identifying classes and subclasses, the next step is specifying attributes, values, and ranges."}, {"text": "What is the final output of the entire knowledge engineering process, as described in the slides?", "options": ["The elicitation plan.", "The represented knowledge document.", "The specification of the knowledge.", "The list of knowledge items needed."], "answer": 2, "explanation": "The final output of the knowledge engineering process is the specification of the knowledge."}, {"text": "What is the primary purpose of Verification and Validation (V&V) in knowledge engineering?", "options": ["To manage the elicitation process.", "To represent knowledge in a standard format.", "To judge the success of a knowledge base project.", "To decide on the elicitation techniques."], "answer": 2, "explanation": "V&V is used to judge the success of a knowledge base project."}, {"text": "Which question best describes 'Verification'?", "options": ["Are we implementing the right system?", "Are we implementing the system right?", "Does the product meet user's requirements?", "Will the users accept the software?"], "answer": 1, "explanation": "Verification asks: 'Are we implementing the system right?'"}, {"text": "Which question best describes 'Validation'?", "options": ["Are we implementing the system right?", "Are we building the product according to specifications?", "Are we implementing the right system?", "Does the code match the design?"], "answer": 2, "explanation": "Validation asks: 'Are we implementing the right system?'"}, {"text": "Which of the following activities is typically part of Verification?", "options": ["Black box testing", "White box testing", "Grey box testing", "Reviews, meetings, and inspections"], "answer": 3, "explanation": "Reviews, meetings, and inspections are typically part of Verification."}, {"text": "What items are typically evaluated during the Validation process?", "options": ["Plans and requirement specifications", "Design specifications and code", "The actual product or software under test", "Test cases and documents"], "answer": 2, "explanation": "The actual product or software under test is evaluated during Validation."}, {"text": "If a knowledge engineer creates a prototype for users to interact with, which elicitation technique are they using?", "options": ["Document inspection", "Structured Interviewing", "Joint Application Design", "Task observation"], "answer": 3, "explanation": "Creating a prototype for users to interact with is a form of Task observation."}, {"text": "Why is the Specification phase important?", "options": ["It allows for more specific formal techniques for analysis.", "It is the first step in gathering raw data.", "It replaces the need for an elicitation plan.", "It is where the team leader is chosen."], "answer": 0, "explanation": "Specification allows for more specific formal techniques for analysis."}, {"text": "In an unstructured interview, the questions are well-known and prepared prior to the meeting.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "That describes a structured interview, not an unstructured one."}, {"text": "Task observation involves a knowledge engineer personally observing how an operation is conducted.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Task observation involves personally observing how an operation is conducted."}, {"text": "Document inspection is a technique used when there is conflicting knowledge and multiple views need to be resolved.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Joint Application Design (JAD) is used for resolving conflicting knowledge, not document inspection."}, {"text": "Joint Application Design is a technique that is very effective and requires no special training.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "JAD needs special training to be effective."}, {"text": "Elicitation is a simple and straightforward process usually performed by one knowledge engineer.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Elicitation is performed by a team of knowledge engineers who work together."}, {"text": "The elicitation plan is used by the team leader or project manager to manage the elicitation process.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The elicitation plan is used by the team leader or project manager to manage the process."}, {"text": "When building an elicitation plan, you should first decide on the techniques and then list the knowledge items.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "You start by listing the knowledge items needed, then decide on techniques."}, {"text": "If knowledge is to be elicited from a group of customers, an interview may be the most suitable technique.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "A questionnaire is more suitable for eliciting knowledge from a group of customers."}, {"text": "In ontology development, we represent items as objects and classes.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "In ontology development, items are represented as objects and classes."}, {"text": "The document created during the Representation phase is called the Specification of Knowledge.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The document created during Representation is called the Represented Knowledge."}, {"text": "During the Representation phase, discovering missing items creates new questions that are fed back to be elicited again.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Discovering missing items creates new questions that need further elicitation."}, {"text": "In the Specification phase, we convert the knowledge into a formal way, such as specifying classes, subclasses, and attributes.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Specification converts knowledge into a formal way with classes, subclasses, and attributes."}, {"text": "The Specification process is the final step and does not lead to any further elicitation.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Specification may lead to more questions and thus to additional elicitation."}, {"text": "The main goal of Verification is to make sure the product meets the user's requirements.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Verification ensures the product is as per requirements and design specifications. Validation ensures it meets user's requirements."}, {"text": "Validation activities include black box testing, white box testing, and grey box testing.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Validation activities include black box, white box, and grey box testing."}, {"text": "Verification involves checking the actual product or software under test.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Verification evaluates plans, specifications, and code. Validation checks the actual product."}, {"text": "White box testing is an activity associated with Verification.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "White box testing is associated with Validation, not Verification."}, {"text": "The purpose of V&V techniques is to measure the quality of knowledge in a knowledge base.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "V&V techniques measure the quality of knowledge in a knowledge base."}, {"text": "Reviews, meetings, and inspections are part of the Validation process.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Reviews, meetings, and inspections are part of the Verification process."}, {"text": "The Specification of the knowledge is the final output of the knowledge engineering process.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The Specification of knowledge is the final output of the knowledge engineering process."}, {"text": "[Scenario: Medical Research] After elicitation, the knowledge engineer organizes concepts into classes (Patient, Disease, Symptom) and defines relationships (Patient has_disease Disease). This activity is called:", "options": ["Verification.", "Validation.", "Specification.", "Representation."], "answer": 3, "explanation": "Representation is organizing extracted knowledge into a structured format with concepts, classes, and relationships."}, {"text": "[Scenario: Medical Research] The final step before feeding knowledge into a computer program is to check that the model correctly reflects the doctor's knowledge. This involves ensuring the system is 'implementing the right system.' This is known as:", "options": ["Verification", "Validation", "Elicitation", "Specification"], "answer": 1, "explanation": "Validation asks 'Are we implementing the right system?' and evaluates if the final product meets user requirements."}, {"text": "[Scenario: University Library] The library team initially builds an ontology based on professor interviews, but testing with students reveals different terminology. They return to elicitation. This demonstrates which characteristic of the knowledge engineering process?", "options": ["Linear progression from elicitation to specification.", "Verification as a final step.", "Iterative nature of the process.", "Hybrid representation of knowledge."], "answer": 2, "explanation": "This demonstrates the iterative nature - cycling back to earlier phases when testing reveals gaps."}, {"text": "[Scenario: E-Commerce] ShopFast runs tests to ensure the system correctly displays price as a number and the taxonomy has no circular references. They also have real customers test if the system helps them find products faster. What distinguishes these two types of testing?", "options": ["The first is Validation; the second is Verification.", "The first is Verification; the second is Validation.", "Both are Verification.", "Both are Validation."], "answer": 1, "explanation": "The first (internal consistency) is Verification ('building it right'). The second (user needs) is Validation ('building the right thing')."}];
+var currentQ=0,score=0,answered=false,selectedOption=-1;
+function startQuiz(){
+document.getElementById('startScreen').style.display='none';
+document.getElementById('scoreBar').style.display='flex';
+document.getElementById('resultsCard').classList.remove('active');
+currentQ=0;score=0;answered=false;selectedOption=-1;
+renderQuestion();
+}
+function renderQuestion(){
+var q=Q[currentQ];
+var total=Q.length;
+document.getElementById('scoreDisplay').textContent=score+' / '+total;
+document.getElementById('progressText').textContent='Question '+(currentQ+1)+' of '+total;
+document.getElementById('progressFill').style.width=((currentQ)/total*100)+'%';
+answered=false;selectedOption=-1;
+var html='<div class="question-card active">';
+html+='<span class="question-number">Question '+(currentQ+1)+'</span>';
+html+='<span class="question-type '+(q.tf?'':'mcq')+'">'+(q.tf?'True / False':'Multiple Choice')+'</span>';
+html+='<p class="question-text">'+q.text+'</p>';
+var letters=['A','B','C','D'];
+html+='<div class="options" id="options">';
+for(var i=0;i<q.options.length;i++){
+html+='<div class="option" data-idx="'+i+'" onclick="selectOption('+i+')">';
+html+='<div class="option-letter">'+letters[i]+'</div>';
+html+='<div>'+q.options[i]+'</div>';
+html+='</div>';
+}
+html+='</div>';
+html+='<div class="btn-row">';
+html+='<button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">Check Answer</button>';
+html+='<button class="btn btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display:none">'+(currentQ===total-1?'See Results':'Next Question')+'</button>';
+html+='</div>';
+html+='<div class="feedback" id="feedback"></div>';
+html+='</div>';
+document.getElementById('quizContainer').innerHTML=html;
+}
+function selectOption(idx){
+if(answered)return;
+selectedOption=idx;
+var opts=document.querySelectorAll('.option');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.remove('selected');
+}
+opts[idx].classList.add('selected');
+}
+function checkAnswer(){
+if(answered)return;
+var q=Q[currentQ];
+if(selectedOption===-1){alert('Please select an answer.');return;}
+var correct=(selectedOption===q.answer);
+answered=true;
+if(correct)score++;
+document.getElementById('scoreDisplay').textContent=score+' / '+Q.length;
+var opts=document.querySelectorAll('.option');
+opts[q.answer].classList.add('correct');
+if(!correct)opts[selectedOption].classList.add('wrong');
+var fb=document.getElementById('feedback');
+fb.className='feedback show '+(correct?'correct':'wrong');
+fb.innerHTML=(correct?'Correct! ':'Wrong. ')+'<br>'+q.explanation;
+document.getElementById('checkBtn').style.display='none';
+document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){
+currentQ++;
+if(currentQ>=Q.length){showResults();return;}
+renderQuestion();
+}
+function showResults(){
+document.getElementById('quizContainer').innerHTML='';
+document.getElementById('scoreBar').style.display='none';
+document.getElementById('progressFill').style.width='100%';
+var pct=Math.round(score/Q.length*100);
+document.getElementById('finalScore').textContent=pct+'%';
+document.getElementById('correctCount').textContent=score;
+document.getElementById('wrongCount').textContent=Q.length-score;
+document.getElementById('resultsCard').classList.add('active');
+}
+function restartQuiz(){
+document.getElementById('resultsCard').classList.remove('active');
+document.getElementById('startScreen').style.display='block';
+}
+</script>
+</body>
+</html>

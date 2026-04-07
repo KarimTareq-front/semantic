@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 1 - Semantic Web Introduction - Quiz</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;padding:20px;color:#333}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;color:white;margin-bottom:30px}
+.header h1{font-size:32px;margin-bottom:5px}
+.header p{opacity:.8;font-size:14px}
+.score-bar{background:rgba(255,255,255,.1);border-radius:12px;padding:15px 25px;display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;color:white;backdrop-filter:blur(10px)}
+.score-bar .score{font-size:24px;font-weight:bold}
+.score-bar .progress-text{font-size:14px;opacity:.8}
+.progress-bar{width:100%;height:6px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00d2ff,#3a7bd5);border-radius:3px;transition:width .3s ease}
+.question-card{background:white;border-radius:16px;padding:30px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.question-card.active{display:block;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.question-number{display:inline-block;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:5px 15px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:15px}
+.question-type{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:10px;font-size:11px;margin-left:10px}
+.question-type.mcq{background:#e3f2fd;color:#1565c0}
+.question-text{font-size:16px;line-height:1.7;margin-bottom:25px;color:#2c3e50}
+.options{display:flex;flex-direction:column;gap:12px}
+.option{padding:15px 20px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#667eea;background:#f8f9ff}
+.option.selected{border-color:#667eea;background:#f0f0ff}
+.option.correct{border-color:#27ae60;background:#e8f5e9}
+.option.wrong{border-color:#e74c3c;background:#ffeaea}
+.option-letter{width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.option.selected .option-letter{background:#667eea;color:white}
+.option.correct .option-letter{background:#27ae60;color:white}
+.option.wrong .option-letter{background:#e74c3c;color:white}
+.btn-row{display:flex;gap:12px;margin-top:25px}
+.btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(102,126,234,.4)}
+.btn-secondary{background:#f0f0f0;color:#333}
+.btn-secondary:hover{background:#e0e0e0}
+.btn-back{background:#f0f0f0;color:#333;border:1px solid #ddd}
+.btn-back:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{margin-top:20px;padding:15px 20px;border-radius:10px;display:none;font-size:14px;line-height:1.6}
+.feedback.show{display:block;animation:slideIn .3s ease}
+.feedback.correct{background:#e8f5e9;color:#2e7d32;border-left:4px solid #27ae60}
+.feedback.wrong{background:#ffeaea;color:#c0392b;border-left:4px solid #e74c3c}
+.results-card{background:white;border-radius:16px;padding:40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.results-card.active{display:block;animation:slideIn .3s ease}
+.results-card h2{font-size:28px;margin-bottom:10px}
+.results-score{font-size:64px;font-weight:bold;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:20px 0}
+.results-details{display:flex;justify-content:center;gap:40px;margin:30px 0}
+.result-item{text-align:center}
+.result-item .number{font-size:32px;font-weight:bold}
+.result-item .label{font-size:13px;color:#666;margin-top:5px}
+.result-item.correct .number{color:#27ae60}
+.result-item.wrong .number{color:#e74c3c}
+.start-screen{background:white;border-radius:16px;padding:50px 40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.start-screen h2{font-size:24px;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:30px;line-height:1.6}
+.start-screen .stats{display:flex;justify-content:center;gap:30px;margin-bottom:30px}
+.start-screen .stat{text-align:center}
+.start-screen .stat .num{font-size:28px;font-weight:bold;color:#667eea}
+.start-screen .stat .lbl{font-size:12px;color:#999}
+@media(max-width:600px){.container{padding:0}.question-card,.results-card,.start-screen{padding:20px}.header h1{font-size:24px}.results-score{font-size:48px}}</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Lecture 1 - Semantic Web Introduction</h1>
+<p>Lec 1: Traditional Web vs Semantic Web, Search Engine Problems</p>
+</div>
+<div class="score-bar" id="scoreBar" style="display:none">
+<div>
+<div class="score" id="scoreDisplay">0 / 0</div>
+<div class="progress-text" id="progressText">Question 1 of 42</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="start-screen" id="startScreen">
+<h2>Ready to test your knowledge?</h2>
+<p>This quiz covers Lec 1: Traditional Web vs Semantic Web, Search Engine Problems with multiple choice and true/false questions.</p>
+<div class="stats">
+<div class="stat"><div class="num">42</div><div class="lbl">Questions</div></div>
+<div class="stat"><div class="num">22</div><div class="lbl">Multiple Choice</div></div>
+<div class="stat"><div class="num">20</div><div class="lbl">True / False</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+<div id="quizContainer"></div>
+<div class="results-card" id="resultsCard">
+<h2>Quiz Complete!</h2>
+<div class="results-score" id="finalScore"></div>
+<div class="results-details">
+<div class="result-item correct"><div class="number" id="correctCount">0</div><div class="label">Correct</div></div>
+<div class="result-item wrong"><div class="number" id="wrongCount">0</div><div class="label">Wrong</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+</div>
+<script>
+var Q=[{"text": "According to the lecture, what is the primary difference between the traditional web and the Semantic Web?", "options": ["The Semantic Web uses images and videos, while the traditional web only uses text.", "The Semantic Web focuses on linking data with meaning, while the traditional web focuses on linking documents for humans.", "The Semantic Web is a new type of internet, while the traditional web is obsolete.", "The Semantic Web is only for academic use, while the traditional web is for everyone."], "answer": 1, "explanation": "The Semantic Web focuses on linking data with meaning, while the traditional web focuses on linking documents for humans."}, {"text": "What is the main problem with the traditional web, as described in the introduction?", "options": ["It is too slow to load pages.", "It is primarily designed for humans to read, and computers don't understand the meaning of the information.", "There are not enough websites connected by links.", "It is too expensive to access."], "answer": 1, "explanation": "The traditional web is designed for humans to read, and computers don't understand the meaning of the information."}, {"text": "In the context of search engine problems, what is 'recall'?", "options": ["The number of irrelevant pages retrieved.", "The ability to remember previous searches.", "The number of pages retrieved in response to a query.", "The accuracy of the retrieved pages."], "answer": 2, "explanation": "Recall refers to the number of pages retrieved in response to a query."}, {"text": "In the context of search engine problems, what is 'precision'?", "options": ["The total number of pages on the web.", "The speed at which results are returned.", "How many of the recalled sources are the ones you need.", "The specific vocabulary used in the query."], "answer": 2, "explanation": "Precision is how many of the recalled sources are the ones you need."}, {"text": "What is one consequence of a query being too specific on a traditional search engine?", "options": ["You will retrieve a lot of pages, most of which are not relevant.", "You may not retrieve any pages at all.", "The search will take too long.", "You will only retrieve pages from a single website."], "answer": 1, "explanation": "A query that is too specific may not retrieve any pages at all."}, {"text": "The lecture states that search results are highly sensitive to vocabulary. What does this mean?", "options": ["You must use complex words to get good results.", "The search engine will automatically find synonyms for your query.", "You often have to use the exact wording that exists in the document to find it.", "The search engine prefers results in a specific language."], "answer": 2, "explanation": "You often have to use the exact wording that exists in the document to find it."}, {"text": "According to the lecture, what is a more appropriate term for a traditional web search engine?", "options": ["Information aggregator", "Knowledge base", "Location finder", "Data processor"], "answer": 2, "explanation": "'Location finder' is considered more appropriate than 'information retrieval'."}, {"text": "What is the main goal of the Semantic Web?", "options": ["To replace the current World Wide Web.", "To make information machine-readable and machine-understandable.", "To increase the speed of internet browsing.", "To create more visually appealing websites."], "answer": 1, "explanation": "The main goal is to make information machine-readable and machine-understandable."}, {"text": "The Semantic Web aims to create a 'web of...' what?", "options": ["Documents", "Links", "Data", "Pages"], "answer": 2, "explanation": "The Semantic Web aims to create a 'web of data'."}, {"text": "What problem with the current web does the example of searching for 'Apple' illustrate?", "options": ["Low recall", "High precision", "Lack of context", "Isolated Data"], "answer": 2, "explanation": "Searching for 'Apple' illustrates the lack of context - is it a fruit or a company?"}, {"text": "The scenario where information is spread across various documents and requires manual combination to get a complete answer illustrates which problem?", "options": ["Low precision", "Results are single Web pages", "Vocabulary sensitivity", "High recall"], "answer": 1, "explanation": "Results being single web pages means you must manually combine information from multiple sources."}, {"text": "Which of the following is a core promise of the Semantic Web?", "options": ["Your computer can display documents faster.", "Your computer can understand the content of documents and answer complex questions.", "Your computer can store more documents.", "Your computer can connect to the internet more reliably."], "answer": 1, "explanation": "The core promise is that your computer can understand content and answer complex questions."}, {"text": "The problem where a search returns 28,758 documents, but only a few are relevant, is an example of:", "options": ["High recall, low precision", "Low recall, high precision", "High recall, high precision", "Low recall, low precision"], "answer": 0, "explanation": "Returning many results (high recall) but few relevant ones (low precision)."}, {"text": "How does the Semantic Web add meaning to data?", "options": ["By using more colors and fonts.", "By enriching data with metadata.", "By creating longer documents.", "By using only numerical data."], "answer": 1, "explanation": "The Semantic Web adds meaning by enriching data with metadata."}, {"text": "The lecture mentions that hospital patient records, lab results, and prescriptions are often kept in separate systems. This is an example of what problem?", "options": ["High recall", "Vocabulary sensitivity", "Isolated Data", "Lack of context"], "answer": 2, "explanation": "This is an example of isolated data across different systems."}, {"text": "What does the Semantic Web add to data to make it machine-understandable?", "options": ["Hyperlinks", "Semantics (meaning)", "Visual formatting", "Database fields"], "answer": 1, "explanation": "The Semantic Web adds semantics (meaning) to data."}, {"text": "What does the acronym 'WWW' stand for in the context of this lecture?", "options": ["World Wide Web", "Web of Wisdom and Words", "Worldwide Weather Watch", "Web of Wired Data"], "answer": 0, "explanation": "WWW stands for World Wide Web."}, {"text": "According to the lecture, what is the primary target audience for the content on the traditional web?", "options": ["Machines and software agents", "Humans", "Search engine crawlers only", "Database administrators"], "answer": 1, "explanation": "The traditional web content is primarily designed for humans."}, {"text": "When a relevant document uses different terminology from a user's original query, it leads to which problem?", "options": ["The query being too specific", "Results being highly sensitive to vocabulary", "Low precision", "Results being single web pages"], "answer": 1, "explanation": "This leads to results being highly sensitive to vocabulary."}, {"text": "The 'Semantic Web' is an extension of the current web that aims to:", "options": ["Make the internet free for everyone.", "Allow computers to interpret and connect information intelligently.", "Create a new, separate network for scientists.", "Focus only on social media platforms."], "answer": 1, "explanation": "The Semantic Web aims to allow computers to interpret and connect information intelligently."}, {"text": "The traditional web is designed so that computers can easily understand the meaning of the information on web pages.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Computers display the information, but they do not easily understand its meaning."}, {"text": "Keyword-based search engines like Google are the main tools for using the Web.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Keyword-based search engines like Google are indeed the main tools for using the Web."}, {"text": "'Precision' in web search refers to the total number of pages retrieved by a search engine.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Precision is how many of the recalled sources are the ones you need. 'Recall' refers to the total number of pages retrieved."}, {"text": "Low recall is a very frequent problem with current search engines.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Low recall is a less frequent problem with current search engines, although it does occur."}, {"text": "If a search returns too many results, it can be almost as unhelpful as receiving too few.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Too many results makes it hard to find relevant information, almost as unhelpful as too few."}, {"text": "A broad query will always retrieve only the most relevant pages.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "A broad query will retrieve a lot of pages, most of which are not relevant."}, {"text": "The Semantic Web is a completely new internet that will replace the current World Wide Web.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The Semantic Web is an extension of the current web, not a replacement."}, {"text": "In the Semantic Web, data is linked and enriched with metadata to enable machines to understand and reason about information.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Data is linked and enriched with metadata to enable machines to understand and reason."}, {"text": "A major limitation of the current web is that data is designed for machines to process, not for humans to read.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Data on the current web is designed for humans to read, not for machines to process."}, {"text": "The Semantic Web aims to help computers understand the context of data, such as whether 'Apple' refers to a fruit or a company.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The Semantic Web helps computers understand context like whether 'Apple' is a fruit or company."}, {"text": "If you need information from several different documents, the traditional web makes it easy to combine that information automatically.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "You must manually extract the partial information from different documents and put it together."}, {"text": "Search engines are often isolated applications, and their results are not readily accessible by other software tools.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Search engines are often isolated applications whose results aren't readily accessible by other tools."}, {"text": "The Semantic Web focuses primarily on improving the visual design of websites.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The Semantic Web focuses on adding meaning (semantics) to data, not visual design."}, {"text": "The term 'information retrieval' is considered by the lecture to be a perfectly accurate description of what search engines do.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The term is somewhat misleading; 'location finder' might be more appropriate."}, {"text": "The traditional web is sometimes called a 'web of data'.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The Semantic Web is called a 'web of data', not the traditional web."}, {"text": "A problem with traditional web search is that semantically similar queries do not always return similar results.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Semantically similar queries often don't return similar results on the traditional web."}, {"text": "When websites create pages from databases, they always include the original structured data in a way computers can easily understand.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "They usually show information in a visual format for humans and don't include the original structured data."}, {"text": "The promise of the Semantic Web is that your computer could connect documents and answer complex questions for you.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The Semantic Web promises that computers could connect documents and answer complex questions."}, {"text": "The lecture states that traditional web search provides great support for retrieving information, making it a very fast activity.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "There is not much support for retrieving information, making it a very time-consuming activity."}, {"text": "The fact that information in different systems is often isolated is a key reason why the Semantic Web is necessary.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Isolated information across different systems is a key reason the Semantic Web is needed."}, {"text": "[Scenario: Travel Planner] A user asks SmartVoyage for 'a relaxing beach resort in Sharm El Sheikh for next October, with a spa and adult-only policy, under $200/night.' Current travel websites return thousands of results. Which is the primary problem with traditional search engines highlighted here?", "options": ["Low recall, because the search engine fails to retrieve any results.", "High recall with low precision, resulting in a massive list of mostly irrelevant results.", "The results are highly sensitive to the order of the keywords used.", "The search engine only returns results from a single, pre-selected travel website."], "answer": 1, "explanation": "A traditional search engine returns a large number of results (high recall) but most are not relevant to the specific criteria (low precision)."}, {"text": "[Scenario: University Library] A student searches for 'neural networks' but finds no results, while the library has 50 books cataloged under 'Artificial Neural Systems.' What is the primary problem?", "options": ["Low recall, because the search engine fails to retrieve relevant documents due to vocabulary mismatch.", "High recall with low precision, because too many irrelevant results are retrieved.", "Results are highly sensitive to the formatting of the search query.", "The search engine only retrieves results from a single database."], "answer": 0, "explanation": "This is low recall caused by vocabulary mismatch - the query term doesn't match the indexing term."}];
+var currentQ=0,score=0,answered=false,selectedOption=-1;
+function startQuiz(){
+document.getElementById('startScreen').style.display='none';
+document.getElementById('scoreBar').style.display='flex';
+document.getElementById('resultsCard').classList.remove('active');
+currentQ=0;score=0;answered=false;selectedOption=-1;
+renderQuestion();
+}
+function renderQuestion(){
+var q=Q[currentQ];
+var total=Q.length;
+document.getElementById('scoreDisplay').textContent=score+' / '+total;
+document.getElementById('progressText').textContent='Question '+(currentQ+1)+' of '+total;
+document.getElementById('progressFill').style.width=((currentQ)/total*100)+'%';
+answered=false;selectedOption=-1;
+var html='<div class="question-card active">';
+html+='<span class="question-number">Question '+(currentQ+1)+'</span>';
+html+='<span class="question-type '+(q.tf?'':'mcq')+'">'+(q.tf?'True / False':'Multiple Choice')+'</span>';
+html+='<p class="question-text">'+q.text+'</p>';
+var letters=['A','B','C','D'];
+html+='<div class="options" id="options">';
+for(var i=0;i<q.options.length;i++){
+html+='<div class="option" data-idx="'+i+'" onclick="selectOption('+i+')">';
+html+='<div class="option-letter">'+letters[i]+'</div>';
+html+='<div>'+q.options[i]+'</div>';
+html+='</div>';
+}
+html+='</div>';
+html+='<div class="btn-row">';
+html+='<button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">Check Answer</button>';
+html+='<button class="btn btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display:none">'+(currentQ===total-1?'See Results':'Next Question')+'</button>';
+html+='</div>';
+html+='<div class="feedback" id="feedback"></div>';
+html+='</div>';
+document.getElementById('quizContainer').innerHTML=html;
+}
+function selectOption(idx){
+if(answered)return;
+selectedOption=idx;
+var opts=document.querySelectorAll('.option');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.remove('selected');
+}
+opts[idx].classList.add('selected');
+}
+function checkAnswer(){
+if(answered)return;
+var q=Q[currentQ];
+if(selectedOption===-1){alert('Please select an answer.');return;}
+var correct=(selectedOption===q.answer);
+answered=true;
+if(correct)score++;
+document.getElementById('scoreDisplay').textContent=score+' / '+Q.length;
+var opts=document.querySelectorAll('.option');
+opts[q.answer].classList.add('correct');
+if(!correct)opts[selectedOption].classList.add('wrong');
+var fb=document.getElementById('feedback');
+fb.className='feedback show '+(correct?'correct':'wrong');
+fb.innerHTML=(correct?'Correct! ':'Wrong. ')+'<br>'+q.explanation;
+document.getElementById('checkBtn').style.display='none';
+document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){
+currentQ++;
+if(currentQ>=Q.length){showResults();return;}
+renderQuestion();
+}
+function showResults(){
+document.getElementById('quizContainer').innerHTML='';
+document.getElementById('scoreBar').style.display='none';
+document.getElementById('progressFill').style.width='100%';
+var pct=Math.round(score/Q.length*100);
+document.getElementById('finalScore').textContent=pct+'%';
+document.getElementById('correctCount').textContent=score;
+document.getElementById('wrongCount').textContent=Q.length-score;
+document.getElementById('resultsCard').classList.add('active');
+}
+function restartQuiz(){
+document.getElementById('resultsCard').classList.remove('active');
+document.getElementById('startScreen').style.display='block';
+}
+</script>
+</body>
+</html>

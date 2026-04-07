@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lecture 2 - Metadata, Linked Data & Knowledge Engineering - Quiz</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;padding:20px;color:#333}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;color:white;margin-bottom:30px}
+.header h1{font-size:32px;margin-bottom:5px}
+.header p{opacity:.8;font-size:14px}
+.score-bar{background:rgba(255,255,255,.1);border-radius:12px;padding:15px 25px;display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;color:white;backdrop-filter:blur(10px)}
+.score-bar .score{font-size:24px;font-weight:bold}
+.score-bar .progress-text{font-size:14px;opacity:.8}
+.progress-bar{width:100%;height:6px;background:rgba(255,255,255,.2);border-radius:3px;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00d2ff,#3a7bd5);border-radius:3px;transition:width .3s ease}
+.question-card{background:white;border-radius:16px;padding:30px;margin-bottom:20px;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.question-card.active{display:block;animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.question-number{display:inline-block;background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:5px 15px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:15px}
+.question-type{display:inline-block;background:#e8f5e9;color:#2e7d32;padding:3px 10px;border-radius:10px;font-size:11px;margin-left:10px}
+.question-type.mcq{background:#e3f2fd;color:#1565c0}
+.question-text{font-size:16px;line-height:1.7;margin-bottom:25px;color:#2c3e50}
+.options{display:flex;flex-direction:column;gap:12px}
+.option{padding:15px 20px;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.option:hover{border-color:#667eea;background:#f8f9ff}
+.option.selected{border-color:#667eea;background:#f0f0ff}
+.option.correct{border-color:#27ae60;background:#e8f5e9}
+.option.wrong{border-color:#e74c3c;background:#ffeaea}
+.option-letter{width:32px;height:32px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.option.selected .option-letter{background:#667eea;color:white}
+.option.correct .option-letter{background:#27ae60;color:white}
+.option.wrong .option-letter{background:#e74c3c;color:white}
+.btn-row{display:flex;gap:12px;margin-top:25px}
+.btn{flex:1;padding:14px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 5px 20px rgba(102,126,234,.4)}
+.btn-secondary{background:#f0f0f0;color:#333}
+.btn-secondary:hover{background:#e0e0e0}
+.btn-back{background:#f0f0f0;color:#333;border:1px solid #ddd}
+.btn-back:hover{background:#e0e0e0}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.feedback{margin-top:20px;padding:15px 20px;border-radius:10px;display:none;font-size:14px;line-height:1.6}
+.feedback.show{display:block;animation:slideIn .3s ease}
+.feedback.correct{background:#e8f5e9;color:#2e7d32;border-left:4px solid #27ae60}
+.feedback.wrong{background:#ffeaea;color:#c0392b;border-left:4px solid #e74c3c}
+.results-card{background:white;border-radius:16px;padding:40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);display:none}
+.results-card.active{display:block;animation:slideIn .3s ease}
+.results-card h2{font-size:28px;margin-bottom:10px}
+.results-score{font-size:64px;font-weight:bold;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:20px 0}
+.results-details{display:flex;justify-content:center;gap:40px;margin:30px 0}
+.result-item{text-align:center}
+.result-item .number{font-size:32px;font-weight:bold}
+.result-item .label{font-size:13px;color:#666;margin-top:5px}
+.result-item.correct .number{color:#27ae60}
+.result-item.wrong .number{color:#e74c3c}
+.start-screen{background:white;border-radius:16px;padding:50px 40px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2)}
+.start-screen h2{font-size:24px;margin-bottom:15px}
+.start-screen p{color:#666;margin-bottom:30px;line-height:1.6}
+.start-screen .stats{display:flex;justify-content:center;gap:30px;margin-bottom:30px}
+.start-screen .stat{text-align:center}
+.start-screen .stat .num{font-size:28px;font-weight:bold;color:#667eea}
+.start-screen .stat .lbl{font-size:12px;color:#999}
+@media(max-width:600px){.container{padding:0}.question-card,.results-card,.start-screen{padding:20px}.header h1{font-size:24px}.results-score{font-size:48px}}</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Lecture 2 - Metadata, Linked Data & Knowledge Engineering</h1>
+<p>Lec 2: Metadata, Linked Data, Ontologies, Knowledge Engineering Basics</p>
+</div>
+<div class="score-bar" id="scoreBar" style="display:none">
+<div>
+<div class="score" id="scoreDisplay">0 / 0</div>
+<div class="progress-text" id="progressText">Question 1 of 43</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="start-screen" id="startScreen">
+<h2>Ready to test your knowledge?</h2>
+<p>This quiz covers Lec 2: Metadata, Linked Data, Ontologies, Knowledge Engineering Basics with multiple choice and true/false questions.</p>
+<div class="stats">
+<div class="stat"><div class="num">43</div><div class="lbl">Questions</div></div>
+<div class="stat"><div class="num">23</div><div class="lbl">Multiple Choice</div></div>
+<div class="stat"><div class="num">20</div><div class="lbl">True / False</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="startQuiz()">Start Quiz</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+<div id="quizContainer"></div>
+<div class="results-card" id="resultsCard">
+<h2>Quiz Complete!</h2>
+<div class="results-score" id="finalScore"></div>
+<div class="results-details">
+<div class="result-item correct"><div class="number" id="correctCount">0</div><div class="label">Correct</div></div>
+<div class="result-item wrong"><div class="number" id="wrongCount">0</div><div class="label">Wrong</div></div>
+</div>
+<div class="btn-row" style="max-width:500px;margin:0 auto">
+<button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+<a href="index.html" class="btn btn-back" style="text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center">Back to Menu</a>
+</div>
+</div>
+</div>
+<script>
+var Q=[{"text": "What is the primary limitation of the 'traditional web' in the Paris hotels example?", "options": ["It cannot find any hotels in Paris.", "It requires the user to manually filter through results to find specific criteria.", "It only shows hotels near the Eiffel Tower.", "It does not have any information on hotels."], "answer": 1, "explanation": "The traditional web requires the user to manually filter through results to find specific criteria."}, {"text": "What is the term for 'data about data' that provides context and meaning to information?", "options": ["Linked Data", "An Ontology", "Metadata", "A Knowledge Base"], "answer": 2, "explanation": "Metadata is 'data about data' that provides context and meaning."}, {"text": "Why is metadata important for the Semantic Web?", "options": ["It makes data visually appealing.", "It allows machines to understand what the data represents.", "It is a method for storing large files.", "It replaces the need for original data."], "answer": 1, "explanation": "Metadata allows machines to understand what the data represents."}, {"text": "What is the primary purpose of Linked Data?", "options": ["To create a single, large database.", "To publish data in a way that it can be interlinked and queried.", "To replace all HTML pages with RDF data.", "To define concepts and relationships in a specific domain."], "answer": 1, "explanation": "Linked Data publishes structured data so it can be interlinked and queried."}, {"text": "In the context of the Semantic Web, what do ontologies provide?", "options": ["A visual layout for websites.", "A shared understanding of a domain for different systems to communicate.", "A faster way to load web pages.", "A method for creating metadata."], "answer": 1, "explanation": "Ontologies provide a shared understanding of a domain for different systems to communicate."}, {"text": "Which domain is highlighted as a particularly promising area for semantic web applications?", "options": ["Finance and Banking", "Education and E-learning", "Biosciences and Medical applications", "Retail and E-commerce"], "answer": 2, "explanation": "Biosciences and Medical applications are highlighted as particularly promising."}, {"text": "What is defined as 'facts that are used mainly in processing'?", "options": ["Information", "Knowledge", "Wisdom", "Data"], "answer": 3, "explanation": "Data is defined as facts that are used mainly in processing."}, {"text": "What is the primary goal of the field of Knowledge Engineering?", "options": ["To build faster computer hardware.", "To design user-friendly software interfaces.", "To emulate the judgment and behavior of a human expert.", "To create new programming languages."], "answer": 2, "explanation": "Knowledge Engineering tries to emulate the judgment and behavior of a human expert."}, {"text": "How is an ontology categorized within the context of Knowledge Engineering?", "options": ["As a type of computer hardware.", "As a knowledge body that models meaning within a certain domain.", "As a software application.", "As a user manual for a system."], "answer": 1, "explanation": "An ontology is a knowledge body that models meaning within a certain domain."}, {"text": "In the medical example, what is built to represent diseases and their interrelationships?", "options": ["A database", "A user interface", "An ontology", "A spreadsheet"], "answer": 2, "explanation": "An ontology is built to represent diseases and their interrelationships."}, {"text": "Knowledge Engineering is concerned with all the following activities EXCEPT:", "options": ["Extracting correct and reliable knowledge.", "Representing knowledge.", "Selling knowledge to other companies.", "Updating and changing knowledge after it's built."], "answer": 2, "explanation": "Selling knowledge to other companies is NOT a concern of Knowledge Engineering."}, {"text": "The sequence of activities involved in building and maintaining knowledge is known as the:", "options": ["Software development lifecycle", "Knowledge engineering process", "Data mining process", "System analysis phase"], "answer": 1, "explanation": "It is known as the knowledge engineering process."}, {"text": "What is a person who performs knowledge engineering activities called?", "options": ["Data Analyst", "System Architect", "Knowledge Engineer", "Software Developer"], "answer": 2, "explanation": "A person who performs knowledge engineering activities is called a Knowledge Engineer."}, {"text": "Which of the following is NOT listed as one of the four major tasks within knowledge engineering?", "options": ["Elicitation", "Implementation", "Specification", "Verification & Validation"], "answer": 1, "explanation": "Implementation is NOT one of the four major tasks. The four are: Elicitation, Representation, Specification, and V&V."}, {"text": "The task of 'specification' in knowledge engineering refers to:", "options": ["Extracting knowledge from experts.", "Putting knowledge in a standard, computer-processable format.", "Checking the correctness of the knowledge.", "Selling the knowledge to clients."], "answer": 1, "explanation": "Specification is putting knowledge in a standard, computer-processable format."}, {"text": "What is the focus of the 'verification and validation' task?", "options": ["Making the knowledge look professional.", "Ensuring the knowledge is stored in a database.", "Checking the correctness and completeness of the knowledge.", "Interviewing domain experts."], "answer": 2, "explanation": "V&V focuses on checking the correctness and completeness of the knowledge."}, {"text": "What is the first step in the knowledge engineering process, involving extracting knowledge from sources?", "options": ["Specification", "Verification", "Elicitation", "Validation"], "answer": 2, "explanation": "Elicitation is the first step - extracting knowledge from its sources."}, {"text": "Which of the following is NOT mentioned as a potential source for knowledge elicitation?", "options": ["Domain expert", "Books", "The knowledge engineer's personal opinion", "Pre-existing systems"], "answer": 2, "explanation": "The knowledge engineer's personal opinion is NOT a valid source for knowledge elicitation."}, {"text": "According to the lecture, information can be all of the following EXCEPT:", "options": ["Images", "Spoken language", "Raw facts used in processing", "Videos"], "answer": 2, "explanation": "Raw facts used in processing is the definition of Data, not Information."}, {"text": "The medical domain is considered complex for semantic web applications because:", "options": ["There are not enough doctors.", "Medical knowledge is difficult to represent in a computer.", "Patients do not want to share information.", "It is a new field with no existing data."], "answer": 1, "explanation": "Medical knowledge is difficult to represent in a computer."}, {"text": "On the Semantic Web, a search engine can understand a query in context and connect data from multiple sources to provide a precise answer.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The Semantic Web enables search engines to understand queries in context and connect data from multiple sources."}, {"text": "Metadata is unimportant for machine interpretation as machines can understand any data without it.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Metadata is important for machine interpretation as it allows machines to understand what the data represents."}, {"text": "Linked Data is a method of publishing structured data so it can be interlinked and queried, enabling connections between different datasets.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Linked Data enables structured data to be interlinked and queried across different datasets."}, {"text": "Ontologies define only concepts in a domain, but not the relationships or rules between them.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Ontologies define concepts, relationships, AND rules in a domain."}, {"text": "The medical domain is simple and easy to represent in a computer, making semantic solutions less promising.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "The medical domain is very complex and difficult to represent, which makes semantic solutions very promising."}, {"text": "Data is defined as content, like text or images, that is mainly for exchanging among people.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "That definition describes Information, not Data."}, {"text": "Knowledge is the understanding gained from connecting and interpreting data.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Knowledge is the understanding gained from connecting and interpreting data."}, {"text": "Knowledge Engineering is a field of Computer Science that focuses on building faster processors.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Knowledge Engineering is a field of Artificial Intelligence that tries to emulate human expert judgment."}, {"text": "An ontology can be categorized as a knowledge body that models the meaning within a certain domain.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "An ontology models the meaning within a certain domain."}, {"text": "Knowledge engineering is only interested in the knowledge itself, but not in the process of building and maintaining it.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Knowledge engineering is interested in both the knowledge itself and the process of building and maintaining it."}, {"text": "The sequence of activities in building and maintaining knowledge is called the 'software development lifecycle'.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "It is called the 'knowledge engineering process'."}, {"text": "A knowledge engineer is the person who performs knowledge engineering activities.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "A knowledge engineer performs knowledge engineering activities."}, {"text": "The four major tasks in knowledge engineering are elicitation, representation, specification, and verification & validation.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The four major tasks are elicitation, representation, specification, and verification & validation."}, {"text": "Specification is the task of extracting knowledge from its sources, such as books and experts.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Elicitation is the task of extracting knowledge. Specification is putting knowledge in a standard format."}, {"text": "Verification and validation are activities that check the cost and speed of the knowledge base.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "V&V checks the correctness and completeness of the knowledge, not cost and speed."}, {"text": "Elicitation involves putting knowledge into a standard, computer-processable format.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "Elicitation involves extracting knowledge from sources. Specification involves putting it in a standard format."}, {"text": "Domain experts are a valid source for knowledge elicitation.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Domain experts are a valid and important source for knowledge elicitation."}, {"text": "According to the lecture, a book's title, author, and publication date are examples of information.", "options": ["True", "False"], "answer": 1, "tf": true, "explanation": "A book's title, author, and publication date are examples of metadata."}, {"text": "In the medical example, symptoms and their relationships can be represented as an ontology.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "Symptoms and their relationships can indeed be represented as an ontology."}, {"text": "The Semantic Web aims to understand user queries in context by connecting data from multiple sources.", "options": ["True", "False"], "answer": 0, "tf": true, "explanation": "The Semantic Web aims to understand queries in context by connecting data from multiple sources."}, {"text": "[Scenario: Travel Planner] To overcome traditional web limitations, SmartVoyage should be built on Semantic Web principles. Which core component would directly help it understand the user's implicit request for an 'adult-only' policy?", "options": ["Linked Data, by connecting to the hotel's booking page.", "Metadata, by tagging each hotel with a category like 'adult-only' as data about the data.", "A search engine algorithm that ranks hotels by popularity.", "An HTML webpage that displays the hotel's rules in a paragraph."], "answer": 1, "explanation": "Metadata tags like <adult-only>true</adult-only> allow machines to understand and filter based on specific policies."}, {"text": "[Scenario: Travel Planner] The system aims to provide a 'web of data' by linking hotel information to local attractions. This is a direct application of which Semantic Web concept?", "options": ["Verification and Validation", "Knowledge Elicitation", "Specification", "Linked Data"], "answer": 3, "explanation": "Linked Data publishes structured data so it can be interlinked and queried across different sources."}, {"text": "[Scenario: Medical Research] Two hospitals use different terminologies for the same disease (e.g., 'Type 2 Diabetes' vs 'Adult-onset'). What is the primary barrier to automatically combining this data?", "options": ["The data is stored on different servers.", "The hospitals use different terminologies and data schemas to represent the same information.", "The researcher lacks the proper security clearance.", "The data is in Arabic, while the search algorithm works in English."], "answer": 1, "explanation": "This is semantic heterogeneity - the same information is represented differently, preventing automatic linking."}];
+var currentQ=0,score=0,answered=false,selectedOption=-1;
+function startQuiz(){
+document.getElementById('startScreen').style.display='none';
+document.getElementById('scoreBar').style.display='flex';
+document.getElementById('resultsCard').classList.remove('active');
+currentQ=0;score=0;answered=false;selectedOption=-1;
+renderQuestion();
+}
+function renderQuestion(){
+var q=Q[currentQ];
+var total=Q.length;
+document.getElementById('scoreDisplay').textContent=score+' / '+total;
+document.getElementById('progressText').textContent='Question '+(currentQ+1)+' of '+total;
+document.getElementById('progressFill').style.width=((currentQ)/total*100)+'%';
+answered=false;selectedOption=-1;
+var html='<div class="question-card active">';
+html+='<span class="question-number">Question '+(currentQ+1)+'</span>';
+html+='<span class="question-type '+(q.tf?'':'mcq')+'">'+(q.tf?'True / False':'Multiple Choice')+'</span>';
+html+='<p class="question-text">'+q.text+'</p>';
+var letters=['A','B','C','D'];
+html+='<div class="options" id="options">';
+for(var i=0;i<q.options.length;i++){
+html+='<div class="option" data-idx="'+i+'" onclick="selectOption('+i+')">';
+html+='<div class="option-letter">'+letters[i]+'</div>';
+html+='<div>'+q.options[i]+'</div>';
+html+='</div>';
+}
+html+='</div>';
+html+='<div class="btn-row">';
+html+='<button class="btn btn-primary" id="checkBtn" onclick="checkAnswer()">Check Answer</button>';
+html+='<button class="btn btn-secondary" id="nextBtn" onclick="nextQuestion()" style="display:none">'+(currentQ===total-1?'See Results':'Next Question')+'</button>';
+html+='</div>';
+html+='<div class="feedback" id="feedback"></div>';
+html+='</div>';
+document.getElementById('quizContainer').innerHTML=html;
+}
+function selectOption(idx){
+if(answered)return;
+selectedOption=idx;
+var opts=document.querySelectorAll('.option');
+for(var i=0;i<opts.length;i++){
+opts[i].classList.remove('selected');
+}
+opts[idx].classList.add('selected');
+}
+function checkAnswer(){
+if(answered)return;
+var q=Q[currentQ];
+if(selectedOption===-1){alert('Please select an answer.');return;}
+var correct=(selectedOption===q.answer);
+answered=true;
+if(correct)score++;
+document.getElementById('scoreDisplay').textContent=score+' / '+Q.length;
+var opts=document.querySelectorAll('.option');
+opts[q.answer].classList.add('correct');
+if(!correct)opts[selectedOption].classList.add('wrong');
+var fb=document.getElementById('feedback');
+fb.className='feedback show '+(correct?'correct':'wrong');
+fb.innerHTML=(correct?'Correct! ':'Wrong. ')+'<br>'+q.explanation;
+document.getElementById('checkBtn').style.display='none';
+document.getElementById('nextBtn').style.display='block';
+}
+function nextQuestion(){
+currentQ++;
+if(currentQ>=Q.length){showResults();return;}
+renderQuestion();
+}
+function showResults(){
+document.getElementById('quizContainer').innerHTML='';
+document.getElementById('scoreBar').style.display='none';
+document.getElementById('progressFill').style.width='100%';
+var pct=Math.round(score/Q.length*100);
+document.getElementById('finalScore').textContent=pct+'%';
+document.getElementById('correctCount').textContent=score;
+document.getElementById('wrongCount').textContent=Q.length-score;
+document.getElementById('resultsCard').classList.add('active');
+}
+function restartQuiz(){
+document.getElementById('resultsCard').classList.remove('active');
+document.getElementById('startScreen').style.display='block';
+}
+</script>
+</body>
+</html>
