@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semantic Web - Quiz Collection</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);min-height:100vh;padding:20px;color:#333}
+.container{max-width:800px;margin:0 auto}
+.header{text-align:center;color:white;margin-bottom:40px}
+.header h1{font-size:36px;margin-bottom:10px}
+.header p{opacity:.8;font-size:16px}
+.stats-bar{background:rgba(255,255,255,.1);border-radius:12px;padding:20px 30px;display:flex;justify-content:center;gap:40px;margin-bottom:40px;color:white;backdrop-filter:blur(10px)}
+.stats-bar .stat{text-align:center}
+.stats-bar .num{font-size:32px;font-weight:bold;color:#00d2ff}
+.stats-bar .lbl{font-size:13px;opacity:.8;margin-top:4px}
+.lecture-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.lecture-card{background:white;border-radius:16px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,.2);transition:all .3s;text-decoration:none;color:inherit;display:block;position:relative;overflow:hidden}
+.lecture-card:hover{transform:translateY(-5px);box-shadow:0 15px 50px rgba(0,0,0,.3)}
+.lecture-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.lecture-card:nth-child(1)::before{background:linear-gradient(90deg,#667eea,#764ba2)}
+.lecture-card:nth-child(2)::before{background:linear-gradient(90deg,#f093fb,#f5576c)}
+.lecture-card:nth-child(3)::before{background:linear-gradient(90deg,#4facfe,#00f2fe)}
+.lecture-card:nth-child(4)::before{background:linear-gradient(90deg,#43e97b,#38f9d7)}
+.lecture-card:nth-child(5)::before{background:linear-gradient(90deg,#fa709a,#fee140)}
+.lecture-card:nth-child(6)::before{background:linear-gradient(90deg,#a18cd1,#fbc2eb)}
+.lecture-card .lec-num{display:inline-block;background:#f0f0f0;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;color:#667eea;margin-bottom:12px}
+.lecture-card h3{font-size:18px;margin-bottom:8px;color:#2c3e50}
+.lecture-card p{font-size:13px;color:#666;line-height:1.5;margin-bottom:15px}
+.lecture-card .meta{display:flex;justify-content:space-between;align-items:center}
+.lecture-card .q-count{font-size:14px;font-weight:600;color:#667eea}
+.lecture-card .arrow{font-size:20px;color:#ccc;transition:all .2s}
+.lecture-card:hover .arrow{color:#667eea;transform:translateX(5px)}
+@media(max-width:600px){.lecture-grid{grid-template-columns:1fr}.header h1{font-size:28px}.stats-bar{flex-wrap:wrap;gap:20px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>Semantic Web Quiz</h1>
+<p>Midterm Revision Questions 2026</p>
+</div>
+<div class="stats-bar">
+<div class="stat"><div class="num">6</div><div class="lbl">Lectures</div></div>
+<div class="stat"><div class="num">260</div><div class="lbl">Total Questions</div></div>
+<div class="stat"><div class="num">140</div><div class="lbl">MCQs</div></div>
+<div class="stat"><div class="num">120</div><div class="lbl">True/False</div></div>
+</div>
+<div class="lecture-grid">
+<a href="Semantic Quiz/lec1.html" class="lecture-card">
+<div class="lec-num">Lecture 1</div>
+<h3>Semantic Web Introduction</h3>
+<p>Traditional Web vs Semantic Web, Search Engine Problems (Recall, Precision), Web of Data</p>
+<div class="meta"><span class="q-count">42 Questions</span><span class="arrow">&rarr;</span></div>
+</a>
+<a href="Semantic Quiz/lec2.html" class="lecture-card">
+<div class="lec-num">Lecture 2</div>
+<h3>Metadata, Linked Data &amp; Knowledge Engineering</h3>
+<p>Metadata, Linked Data, Ontologies, Knowledge Engineering Basics, Data vs Information vs Knowledge</p>
+<div class="meta"><span class="q-count">43 Questions</span><span class="arrow">&rarr;</span></div>
+</a>
+<a href="Semantic Quiz/lec3.html" class="lecture-card">
+<div class="lec-num">Lecture 3</div>
+<h3>Knowledge Elicitation</h3>
+<p>Elicitation Techniques (Interviews, Questionnaires, Brainstorming, JAD, Task Observation), Sources</p>
+<div class="meta"><span class="q-count">43 Questions</span><span class="arrow">&rarr;</span></div>
+</a>
+<a href="Semantic Quiz/lec4.html" class="lecture-card">
+<div class="lec-num">Lecture 4</div>
+<h3>Elicitation Plan, Representation &amp; V&amp;V</h3>
+<p>Elicitation Plan, Representation Phase, Specification, Verification &amp; Validation</p>
+<div class="meta"><span class="q-count">44 Questions</span><span class="arrow">&rarr;</span></div>
+</a>
+<a href="Semantic Quiz/lec5.html" class="lecture-card">
+<div class="lec-num">Lecture 5</div>
+<h3>Knowledge Types &amp; Ontology Roles</h3>
+<p>KE Process Characteristics, Domain/Inference/Task/Strategic Knowledge, Ontology in CS</p>
+<div class="meta"><span class="q-count">44 Questions</span><span class="arrow">&rarr;</span></div>
+</a>
+<a href="Semantic Quiz/lec6.html" class="lecture-card">
+<div class="lec-num">Lecture 6</div>
+<h3>Ontology Definition &amp; Components</h3>
+<p>Ontology Definition, Levels (Informal, Jargon, KR, Machine), Components, Scenarios</p>
+<div class="meta"><span class="q-count">44 Questions</span><span class="arrow">&rarr;</span></div>
+</a>
+</div>
+</div>
+</body>
+</html>
